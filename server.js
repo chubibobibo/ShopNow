@@ -9,6 +9,13 @@ const app = express();
 //parsing json
 app.use(express.json());
 
+//connection to database
+// getting-started.js
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(process.env.MONGOOSE_URL);
+}
+
 //page not found
 app.use("*", (req, res, next) => {
   res.status(404).json({ message: "Page not found" });
