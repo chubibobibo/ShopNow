@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
+//express router import
+import userRouter from "./routes/userRoutes.js";
+
 //instantiate express
 const app = express();
 
@@ -15,6 +18,9 @@ main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.MONGOOSE_URL);
 }
+
+//express router
+app.use("/api/user", userRouter);
 
 //page not found
 app.use("*", (req, res, next) => {
