@@ -23,6 +23,7 @@ const withValidationErrors = (validateValues) => {
 
 //validation function from input
 //calls the withValidationErrors to validate
+//import in the routes
 export const validateRegister = withValidationErrors([
   body("name")
     .notEmpty()
@@ -51,4 +52,17 @@ export const validateRegister = withValidationErrors([
         throw new ExpressError("Email already exist");
       }
     }),
+]);
+
+export const validateLogin = withValidationErrors([
+  body("email")
+    .notEmpty()
+    .withMessage("Please provide an email")
+    .isEmail()
+    .withMessage("Not a valid email"),
+  body("password")
+    .notEmpty()
+    .withMessage("Please provide a password")
+    .isLength({ min: 8 })
+    .withMessage("Password must be atleast 8 characters"),
 ]);

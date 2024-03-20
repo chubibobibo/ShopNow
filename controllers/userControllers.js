@@ -4,6 +4,7 @@ import { UserModel } from "../models/UserSchema.js";
 //error handler
 import { ExpressError } from "../ExpressError/ExpressError.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   if (!req.body) {
@@ -23,4 +24,38 @@ export const registerUser = async (req, res) => {
     throw new ExpressError("Cannot create user", 400);
   }
   res.status(200).json({ message: "User Created", registeredUser });
+};
+
+//login
+export const loginUser = async (req, res) => {
+  if (!req.body) {
+    throw new ExpressError("No recieved from input", 400);
+  }
+
+  const user = await UserModel.findOne({ email: req.body.email });
+  // console.log(user);
+  if (!user) {
+    throw new ExpressError("No user found", 400);
+  }
+  const loggedUser = bcrypt.compareSync(req.body.password, user.password);
+  if (!loggedUser) {
+    throw new ExpressError("Incorrect email or password");
+  }
+  //implement jwt tokens and cookies on a successful login
+  const token = jwt.sign(
+    {
+      userId: user._id,
+      role: user.role,
+      name: user.name,
+    },
+    process.env.SECRET,
+    { expiresIn: "7d" }
+  );
+  //create cookies based on the token created
+  res.cookie("UserCookie", token, {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+  }); // expires in 1 week
+
+  res.status(200).json({ message: `Welcome ${user.name}` });
 };
