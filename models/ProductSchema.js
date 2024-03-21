@@ -7,8 +7,12 @@ const ProductSchema = new Schema({
     type: String,
     required: true,
   },
-  StockQty: {
+  stockQty: {
     type: Number,
+    required: true,
+  },
+  prodDescription: {
+    type: String,
     required: true,
   },
 });

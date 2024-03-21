@@ -31,7 +31,7 @@ export const loginUser = async (req, res) => {
   if (!req.body) {
     throw new ExpressError("No recieved from input", 400);
   }
-
+  //find user using email provided in forms (to compare)
   const user = await UserModel.findOne({ email: req.body.email });
   // console.log(user);
   if (!user) {
@@ -55,6 +55,7 @@ export const loginUser = async (req, res) => {
   res.cookie("UserCookie", token, {
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    secure: process.env.NODE_ENV,
   }); // expires in 1 week
 
   res.status(200).json({ message: `Welcome ${user.name}` });
