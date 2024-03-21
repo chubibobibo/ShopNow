@@ -52,11 +52,22 @@ export const loginUser = async (req, res) => {
     { expiresIn: "7d" }
   );
   //create cookies based on the token created
-  res.cookie("UserCookie", token, {
+  res.cookie("userCookie", token, {
     httpOnly: true,
     expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     secure: process.env.NODE_ENV,
   }); // expires in 1 week
 
   res.status(200).json({ message: `Welcome ${user.name}` });
+};
+
+//logout user
+export const logoutUser = async (req, res) => {
+  //create a new cookie that will expire immediately
+  res.cookie("userCookie", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  console.log(userCookie);
+  res.status(200).json({ message: "User logged out" });
 };
