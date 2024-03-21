@@ -5,6 +5,7 @@ dotenv.config();
 
 //express router import
 import userRouter from "./routes/userRoutes.js";
+import productRouter from "./routes/productRoutes.js";
 
 //instantiate express
 const app = express();
@@ -21,6 +22,7 @@ async function main() {
 
 //express router
 app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
 
 //page not found
 app.use("*", (req, res, next) => {

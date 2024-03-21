@@ -1,6 +1,8 @@
 import { body, param, validationResult } from "express-validator";
 import { UserModel } from "../models/UserSchema.js";
 import { ExpressError } from "../ExpressError/ExpressError.js";
+import mongoose from "mongoose";
+import { ProductModel } from "../models/ProductSchema.js";
 
 //validator
 //create a function that will handle the error
@@ -65,4 +67,36 @@ export const validateLogin = withValidationErrors([
     .withMessage("Please provide a password")
     .isLength({ min: 8 })
     .withMessage("Password must be atleast 8 characters"),
+]);
+
+//create product validation
+export const validateCreateProduct = withValidationErrors([
+  body("productName")
+    .notEmpty()
+    .withMessage("Product name should not be empty")
+    .isLength({ max: 30 })
+    .withMessage("Product name should not exceed 30 characters"),
+  body("stockQty")
+    .notEmpty()
+    .withMessage("Qty should not be empty")
+    .isNumeric()
+    .withMessage("Qty shgould be a whole number"),
+]);
+
+//validate params for searching specific products
+export const validateParam = withValidationErrors([
+  param("id")
+    .notEmpty()
+    .withMessage("No params recieved")
+    .custom(async (id) => {
+      const validId = mongoose.Types.ObjectId.isValid(id); //returns a boolean value
+      if (!validId) {
+        throw new ExpressError("Not a valid id");
+      }
+      //search for the specific product
+      const validatedId = await ProductModel.findById(id);
+      if (!validatedId) {
+        throw new ExpressError("Product cannot be found");
+      }
+    }),
 ]);
