@@ -35,3 +35,18 @@ export const singleProduct = async (req, res) => {
   //   console.log(foundSingleProduct);
   res.status(200).json({ message: "single product", foundSingleProduct });
 };
+
+//modify a single product (for admin only)
+export const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  if (!req.body) {
+    throw new ExpressError("No data recieved", 400);
+  }
+  const foundProduct = await ProductModel.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
+  if (!foundProduct) {
+    throw new ExpressError("Product cannot be updated", 400);
+  }
+  res.status(200).json({ message: "product updated", foundProduct });
+};
