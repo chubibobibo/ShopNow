@@ -50,3 +50,13 @@ export const updateProduct = async (req, res) => {
   }
   res.status(200).json({ message: "product updated", foundProduct });
 };
+
+// delete a product
+export const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const deletedProduct = await ProductModel.findByIdAndDelete(id);
+  if (!deletedProduct) {
+    throw new ExpressError("Cannot delete product", 400);
+  }
+  res.status(200).json({ message: "Product deleted" });
+};

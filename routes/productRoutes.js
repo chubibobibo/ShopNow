@@ -7,6 +7,7 @@ import {
   allProduct,
   singleProduct,
   updateProduct,
+  deleteProduct,
 } from "../controllers/productControllers.js";
 
 //validation imports
@@ -19,5 +20,6 @@ router.post("/createProduct", validateCreateProduct, createProduct);
 router.get("/allProducts", allProduct);
 router.get("/:id", validateParam, singleProduct);
 router.patch("/:id", validateParam, updateProduct);
+router.delete("/:id", validateParam, deleteProduct);
 
 export default router;
