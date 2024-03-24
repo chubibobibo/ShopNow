@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
+import cookieParser from "cookie-parser";
 
 //express router import
 import userRouter from "./routes/userRoutes.js";
@@ -12,6 +13,8 @@ const app = express();
 
 //parsing json
 app.use(express.json());
+//cookie parser
+app.use(cookieParser());
 
 //connection to database
 // getting-started.js

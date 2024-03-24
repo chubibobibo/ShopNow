@@ -42,21 +42,25 @@ export const loginUser = async (req, res) => {
     throw new ExpressError("Incorrect email or password");
   }
   //implement jwt tokens and cookies on a successful login
-  const token = jwt.sign(
-    {
-      userId: user._id,
-      role: user.role,
-      name: user.name,
-    },
-    process.env.SECRET,
-    { expiresIn: "7d" }
-  );
-  //create cookies based on the token created
-  res.cookie("userCookie", token, {
-    httpOnly: true,
-    expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
-    secure: process.env.NODE_ENV,
-  }); // expires in 1 week
+  try {
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        role: user.role,
+        name: user.name,
+      },
+      process.env.SECRET,
+      { expiresIn: "7d" }
+    );
+    //create cookies based on the token created
+    res.cookie("userCookie", token, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      secure: process.env.NODE_ENV === "production",
+    }); // expires in 1 week
+  } catch (err) {
+    console.log(err);
+  }
 
   res.status(200).json({ message: `Welcome ${user.name}` });
 };

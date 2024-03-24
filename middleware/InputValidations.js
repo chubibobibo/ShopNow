@@ -69,6 +69,7 @@ export const validateLogin = withValidationErrors([
     .withMessage("Password must be atleast 8 characters"),
 ]);
 
+//product validations
 //create product validation
 export const validateCreateProduct = withValidationErrors([
   body("productName")
@@ -81,6 +82,9 @@ export const validateCreateProduct = withValidationErrors([
     .withMessage("Qty should not be empty")
     .isNumeric()
     .withMessage("Qty shgould be a whole number"),
+  body("prodDescription")
+    .notEmpty()
+    .withMessage("Product description shoould not be empty"),
 ]);
 
 //validate params for searching specific products

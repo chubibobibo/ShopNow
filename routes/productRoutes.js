@@ -16,7 +16,14 @@ import {
   validateParam,
 } from "../middleware/InputValidations.js";
 
-router.post("/createProduct", validateCreateProduct, createProduct);
+import { userAuthentication } from "../middleware/userAuthentication.js";
+
+router.post(
+  "/createProduct",
+  validateCreateProduct,
+  userAuthentication,
+  createProduct
+);
 router.get("/allProducts", allProduct);
 router.get("/:id", validateParam, singleProduct);
 router.patch("/:id", validateParam, updateProduct);
