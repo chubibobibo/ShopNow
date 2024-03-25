@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 //express router import
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
+import cartRouter from "./routes/cartRoutes.js";
 
 //instantiate express
 const app = express();
@@ -26,6 +27,7 @@ async function main() {
 //express router
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
 
 //page not found
 app.use("*", (req, res, next) => {
