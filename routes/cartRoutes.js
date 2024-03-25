@@ -8,6 +8,7 @@ import { addToCart, deleteCart } from "../controllers/cartController.js";
 import { userAuthentication } from "../middleware/userAuthentication.js";
 
 //add to cart
+//authentication needed
 router.post("/addToCart", userAuthentication, addToCart);
 router.delete("/deleteCart/:id", userAuthentication, deleteCart);
 
