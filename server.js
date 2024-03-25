@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -8,9 +9,11 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoutes.js";
 import productRouter from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 //instantiate express
 const app = express();
+app.use(cors());
 
 //parsing json
 app.use(express.json());
@@ -28,6 +31,7 @@ async function main() {
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/admin", adminRouter);
 
 //page not found
 app.use("*", (req, res, next) => {

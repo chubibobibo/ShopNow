@@ -16,17 +16,27 @@ import {
   validateParam,
 } from "../middleware/InputValidations.js";
 
-import { userAuthentication } from "../middleware/userAuthentication.js";
+import {
+  isAdmin,
+  userAuthentication,
+} from "../middleware/userAuthentication.js";
 
-router.post(
-  "/createProduct",
+//creating a product is limited to admin only
+//needs to authenticate user first (creation of req.user) to check if logged user role is admin
+router.post("/createProduct", [
   validateCreateProduct,
   userAuthentication,
-  createProduct
-);
+  isAdmin("admin"),
+  createProduct,
+]);
 router.get("/allProducts", allProduct);
 router.get("/:id", validateParam, singleProduct);
-router.patch("/:id", validateParam, updateProduct);
-router.delete("/:id", validateParam, deleteProduct);
+router.patch("/:id", [
+  validateParam,
+  userAuthentication,
+  isAdmin("admin"),
+  updateProduct,
+]);
+router.delete("/:id", [validateParam, isAdmin("admin"), deleteProduct]);
 
 export default router;
