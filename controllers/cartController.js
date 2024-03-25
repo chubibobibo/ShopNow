@@ -16,5 +16,5 @@ export const addToCart = async (req, res) => {
 export const deleteCart = async (req, res) => {
   const { id } = req.params;
   const deletedItem = await CartModel.findByIdAndDelete(id);
-  res.status(200).json({ message: "Item deleted from the cart" });
+  res.status(200).json({ message: "Item deleted from the cart", deletedItem });
 };
