@@ -14,9 +14,17 @@ import {
   isAdmin,
 } from "../middleware/userAuthentication.js";
 
+//import input validations
+import { validateUpdateProfile } from "../middleware/InputValidations.js";
+
 //Note: need to authenticate user before using isAdmin, because it relies on the req.user that is only created when authenticating the user
 router.get("/loggedUser", userAuthentication, loggedUser);
-router.patch("/updateProfile/:id", userAuthentication, updateProfile);
+router.patch(
+  "/updateProfile",
+  userAuthentication,
+  validateUpdateProfile,
+  updateProfile
+);
 router.get("/appData", userAuthentication, isAdmin("admin"), appData);
 
 export default router;

@@ -104,3 +104,49 @@ export const validateParam = withValidationErrors([
       }
     }),
 ]);
+
+//validating input for update products
+export const validateUpdateProduct = withValidationErrors([
+  body("productName")
+    .notEmpty()
+    .withMessage("Product name should not be empty")
+    .isLength({ max: 30 })
+    .withMessage("Product name should not exceed 30 characters"),
+  body("stockQty")
+    .notEmpty()
+    .withMessage("Quantity cannot be empty")
+    .isNumeric()
+    .withMessage("Quantity should be a whole number"),
+  body("prodDescription")
+    .notEmpty()
+    .withMessage("Product description shoould not be empty"),
+]);
+
+//validating profile update
+export const validateUpdateProfile = withValidationErrors([
+  body("name")
+    .notEmpty()
+    .withMessage("Name should not be empty")
+    .isLength({ max: 25 })
+    .withMessage("Name cannot exceed 25 characters"),
+  body("lastName")
+    .notEmpty()
+    .withMessage("Last name cannot be empty")
+    .isLength({ max: 25 })
+    .withMessage("Last name cannot exceed 25 characters"),
+  body("email")
+    .notEmpty()
+    .withMessage("Email cannot be empty")
+    .isEmail()
+    .withMessage("Should be a valid email address")
+
+    //using email, check if the email from the update form exist already in the DB and if the user that owns that email is logged in
+    //we need to include {req} to use the req.user to compare if foundUser is equal to the logged user
+    //NOTE:  basically it is ok if the email already exist in the database as long as the logged in user is the owner of that email for him to update the profile
+    .custom(async (email, { req }) => {
+      const foundUser = await UserModel.findOne({ email: email });
+      if (foundUser && foundUser._id.toString() !== req.user.userId) {
+        throw new ExpressError("User is not authorized", 400);
+      }
+    }),
+]);

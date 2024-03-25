@@ -16,6 +16,7 @@ export const userAuthentication = async (req, res, next) => {
   next();
 };
 
+//to use this middlewre we need to use the userAuthentication first for the req.user
 export const isAdmin = (...roles) => {
   return (req, res, next) => {
     const userAdmin = roles.includes(req.user.role);

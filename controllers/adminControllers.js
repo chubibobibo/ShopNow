@@ -33,7 +33,9 @@ export const updateProfile = async (req, res) => {
 
 //obtaining app data
 export const appData = async (req, res) => {
-  const productData = await ProductModel.countDocuments();
-  const userData = await UserModel.countDocuments();
-  res.status(200).json({ message: "App and user data", productData, userData });
+  const totalProducts = await ProductModel.countDocuments();
+  const totalUsers = await UserModel.countDocuments();
+  res
+    .status(200)
+    .json({ message: "App and user data", totalProducts, totalUsers });
 };
