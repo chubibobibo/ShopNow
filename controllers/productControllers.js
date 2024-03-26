@@ -39,7 +39,7 @@ export const singleProduct = async (req, res) => {
 //modify a single product (for admin only)
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+
   if (!req.body) {
     throw new ExpressError("No data recieved", 400);
   }
